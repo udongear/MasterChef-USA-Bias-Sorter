@@ -6,7 +6,7 @@ dataSet[dataSetVersion].options = [
     name: "Filter by Season",
     key: "season",
     tooltip: "Check this to restrict to certain series.",
-    checked: false,
+    checked: true,
     sub: [
       { name: "Season 1", key: "s1" },
       { name: "Season 2", key: "s2" },
@@ -22,14 +22,15 @@ dataSet[dataSetVersion].options = [
       { name: "Season 12", tooltip: "MasterChef - Back To Win", key: "s12" },
       { name: "Season 13", tooltip: "MasterChef - United Tastes Of America", key: "s13" },
       { name: "Season 14", tooltip: "MasterChef - Generations", key: "s14" },
-      //{ name: "Season 15", tooltip: "MasterChef - Duos", key: "s15" }, 
+      { name: "Season 15", tooltip: "MasterChef - Duos", key: "s15" },
+      { name: "Season 16", key: "s16" },
     ]
   },
   {
     name: "Filter by Placement",
     key: "placement",
     tooltip: "Check this to include all contestants regardless of placement",
-    checked: false,
+    checked: true,
     sub: [ 
         { name: "Winner", key: "p1" }, 
         { name: "Runner-Up", key: "p2" }, 
@@ -1736,14 +1737,14 @@ dataSet[dataSetVersion].characterData = [
   male: true, }
 },
 { name: "Becca Gibb",
-  img: "14-02) Becca Gibb.png",
+  img: "14-03) Becca Gibb.png",
   opts: {
   season: ["s14"],
   placement: ["p2"],
   female: true, }
 },
 { name: "Kamay Lafalaise",
-  img: "14-02) Kamay Lafalaise.png",
+  img: "14-03) Kamay Lafalaise.png",
   opts: {
   season: ["s14"],
   placement: ["p2"],
@@ -1868,7 +1869,239 @@ dataSet[dataSetVersion].characterData = [
   placement: ["p20"],
   male: true, }
 },
- 
+{ name: "Jessie & Jessica",
+  img: "15-01) Jessie-Jessica.png",
+  opts: {
+  season: ["s15"],
+  placement: ["p1"],
+  female: true, }
+},
+{ name: "Rachel & Julio",
+  img: "15-03) Rachel-Julio.png",
+  opts: {
+  season: ["s15"],
+  placement: ["p3"],
+  male: true,
+  female: true, }
+},
+{ name: "Tina & Aivan",
+  img: "15-03) Tina-Aivan.png",
+  opts: {
+  season: ["s15"],
+  placement: ["p3"],
+  male: true,
+  female: true, }
+},
+{ name: "Zach & Michelle",
+  img: "15-04) Zach-Michelle.png",
+  opts: {
+  season: ["s15"],
+  placement: ["p4"],
+  male: true,
+  female: true, }
+},
+{ name: "Azu & Javier",
+  img: "15-05) Azu-Javier.png",
+  opts: {
+  season: ["s15"],
+  placement: ["p5"],
+  male: true,
+  female: true, }
+},
+{ name: "Adam & Joel",
+  img: "15-06) Adam-Joel.png",
+  opts: {
+  season: ["s15"],
+  placement: ["p6"],
+  male: true, }
+},
+{ name: "Timothy & Athena",
+  img: "15-07) Timothy-Athena.png",
+  opts: {
+  season: ["s15"],
+  placement: ["p7"],
+  male: true,
+  female: true, }
+},
+{ name: "Tonna & Cait",
+  img: "15-08) Tonna-Cait.png",
+  opts: {
+  season: ["s15"],
+  placement: ["p8"],
+  female: true, }
+},
+{ name: "Kayla & RyanCate",
+  img: "15-09) Kayla-RyanCate.png",
+  opts: {
+  season: ["s15"],
+  placement: ["p9"],
+  male: true,
+  female: true, }
+},
+{ name: "Darce & Courtney",
+  img: "15-10) Darce-Courtney.png",
+  opts: {
+  season: ["s15"],
+  placement: ["p10"],
+  male: true,
+  female: true, }
+},
+{ name: "Ashley & Ricky",
+  img: "15-11) Ashley-Ricky.png",
+  opts: {
+  season: ["s15"],
+  placement: ["p11"],
+  male: true,
+  female: true, }
+},
+{ name: "Kevin & Tray",
+  img: "15-12) Kevin-Tray.png",
+  opts: {
+  season: ["s15"],
+  placement: ["p12"],
+  male: true, }
+},
+{ name: "Jake Kelley",
+  img: "16-01) Jake.png",
+  opts: {
+  season: ["s16"],
+  placement: ["p1"],
+  male: true, }
+},
+{ name: "Heidi Muston",
+  img: "16-03) Heidi.png",
+  opts: {
+  season: ["s16"],
+  placement: ["p3"],
+  female: true, }
+},
+{ name: "Peter Egede",
+  img: "16-03) Peter.png",
+  opts: {
+  season: ["s16"],
+  placement: ["p3"],
+  male: true, }
+},
+{ name: "Julia Cili",
+  img: "16-04) Julia.png",
+  opts: {
+  season: ["s16"],
+  placement: ["p4"],
+  female: true, }
+},
+{ name: "Basia Newman",
+  img: "16-05) Basia.png",
+  opts: {
+  season: ["s16"],
+  placement: ["p5"],
+  female: true, }
+},
+{ name: "Dave Patera",
+  img: "16-06) Dave.png",
+  opts: {
+  season: ["s16"],
+  placement: ["p6"],
+  male: true, }
+},
+{ name: "Foo Nguyen",
+  img: "16-07) Foo.png",
+  opts: {
+  season: ["s16"],
+  placement: ["p7"],
+  male: true, }
+},
+{ name: "Tkaiya Dryden",
+  img: "16-07) Tkaiya.png",
+  opts: {
+  season: ["s16"],
+  placement: ["p7"],
+  female: true, }
+},
+{ name: "Aishu Challa",
+  img: "16-09) Aishu.png",
+  opts: {
+  season: ["s16"],
+  placement: ["p9"],
+  female: true, }
+},
+{ name: "Jaime Tan",
+  img: "16-09) Jaime.png",
+  opts: {
+  season: ["s16"],
+  placement: ["p9"],
+  male: true, }
+},
+{ name: "Maria Bourland",
+  img: "16-11) Maria.png",
+  opts: {
+  season: ["s16"],
+  placement: ["p11"],
+  female: true, }
+},
+{ name: "Agatha Sunsi",
+  img: "16-12) Agatha.png",
+  opts: {
+  season: ["s16"],
+  placement: ["p12"],
+  female: true, }
+},
+{ name: "Rita Igbinoba",
+  img: "16-13) Rita.png",
+  opts: {
+  season: ["s16"],
+  placement: ["p13"],
+  female: true, }
+},
+{ name: "Shompa Kabir-Furqan",
+  img: "16-13) Shompa.png",
+  opts: {
+  season: ["s16"],
+  placement: ["p13"],
+  female: true, }
+},
+{ name: "Britny Underwood",
+  img: "16-15) Britny.png",
+  opts: {
+  season: ["s16"],
+  placement: ["p15"],
+  female: true, }
+},
+{ name: "Daniel Meng",
+  img: "16-15) Daniel.png",
+  opts: {
+  season: ["s16"],
+  placement: ["p15"],
+  male: true, }
+},
+{ name: "Nico Cosereanu",
+  img: "16-17) Nico.png",
+  opts: {
+  season: ["s16"],
+  placement: ["p17"],
+  male: true, }
+},
+{ name: "Ted Pappas",
+  img: "16-18) Ted.png",
+  opts: {
+  season: ["s16"],
+  placement: ["p18"],
+  male: true, }
+},
+{ name: "Camilo Chavez III",
+  img: "16-19) Camilo.png",
+  opts: {
+  season: ["s16"],
+  placement: ["p19"],
+  male: true, }
+},
+{ name: "Nora Chakri",
+  img: "16-20) Nora.png",
+  opts: {
+  season: ["s16"],
+  placement: ["p20"],
+  female: true, }
+},
+
 /*
 { name: "",
   img: "",

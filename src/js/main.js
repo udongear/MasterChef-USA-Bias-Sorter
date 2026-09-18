@@ -142,16 +142,14 @@ function start() {
   /** Check selected options and convert to boolean array form. */
   optTaken = [];
 
+  /** Sub-checkboxes always drive filtering directly, regardless of the group's own checked state. */
   options.forEach(opt => {
     if ('sub' in opt) {
-      if (!document.getElementById(`cbgroup-${opt.key}`).checked) optTaken.push(false);
-      else {
-        const suboptArray = opt.sub.reduce((arr, val, idx) => {
-          arr.push(document.getElementById(`cb-${opt.key}-${idx}`).checked);
-          return arr;
-        }, []);
-        optTaken.push(suboptArray);
-      }
+      const suboptArray = opt.sub.reduce((arr, val, idx) => {
+        arr.push(document.getElementById(`cb-${opt.key}-${idx}`).checked);
+        return arr;
+      }, []);
+      optTaken.push(suboptArray);
     } else { optTaken.push(document.getElementById(`cb-${opt.key}`).checked); }
   });
 
@@ -178,16 +176,14 @@ function start() {
   /** Filter out deselected nested criteria and remove selected criteria. */
   options.forEach((opt, index) => {
     if ('sub' in opt) {
-      if (optTaken[index]) {
-        const subArray = optTaken[index].reduce((subList, subBool, subIndex) => {
-          if (subBool) { subList.push(options[index].sub[subIndex].key); }
-          return subList;
-        }, []);
-        characterDataToSort = characterDataToSort.filter(char => {
-          if (!(opt.key in char.opts)) console.warn(`Warning: ${opt.key} not set for ${char.name}.`);
-          return opt.key in char.opts && char.opts[opt.key].some(key => subArray.includes(key));
-        });
-      }
+      const subArray = optTaken[index].reduce((subList, subBool, subIndex) => {
+        if (subBool) { subList.push(options[index].sub[subIndex].key); }
+        return subList;
+      }, []);
+      characterDataToSort = characterDataToSort.filter(char => {
+        if (!(opt.key in char.opts)) console.warn(`Warning: ${opt.key} not set for ${char.name}.`);
+        return opt.key in char.opts && char.opts[opt.key].some(key => subArray.includes(key));
+      });
     } else if (optTaken[index]) {
       characterDataToSort = characterDataToSort.filter(char => !char.opts[opt.key]);
     }
@@ -292,7 +288,8 @@ function display() {
   document.querySelector('.left.sort.image').src = leftChar.img;
   document.querySelector('.right.sort.image').src = rightChar.img;
 
-  
+  document.querySelector('.backdrop.left').src = leftChar.img;
+  document.querySelector('.backdrop.right').src = rightChar.img;
 
   document.querySelector('.left.sort.text').innerHTML = charNameDisp(leftChar.name);
   document.querySelector('.right.sort.text').innerHTML = charNameDisp(rightChar.name);
@@ -475,6 +472,8 @@ function result(imageNum = 3) {
   
   document.querySelectorAll('.sorting.button').forEach(el => el.style.display = 'none');
   document.querySelectorAll('.sort.text').forEach(el => el.style.display = 'none');
+  document.querySelector('.backdrop.left').src = 'src/assets/defaultL.jpg';
+  document.querySelector('.backdrop.right').src = 'src/assets/defaultR.jpg';
   document.querySelector('.options').style.display = 'none';
   document.querySelector('.info').style.display = 'none';
 
@@ -651,8 +650,9 @@ function populateOptions() {
   const optInsert = (name, id, tooltip, checked = true, disabled = false) => {
     return `<div><label title="${tooltip?tooltip:name}"><input id="cb-${id}" type="checkbox" ${checked?'checked':''} ${disabled?'disabled':''}> ${name}</label></div>`;
   };
+  const toggleLabel = checked => checked ? 'Deselect All' : 'Select All';
   const optInsertLarge = (name, id, tooltip, checked = true) => {
-    return `<div class="large option"><label title="${tooltip?tooltip:name}"><input id="cbgroup-${id}" type="checkbox" ${checked?'checked':''}> ${name}</label></div>`;
+    return `<div class="large option"><label title="${tooltip?tooltip:name}"><input id="cbgroup-${id}" type="checkbox" ${checked?'checked':''}> <span id="cbgroup-label-${id}">${toggleLabel(checked)}</span></label></div>`;
   };
 
   /** Clear out any previous options. */
@@ -663,16 +663,18 @@ function populateOptions() {
     if ('sub' in opt) {
       optList.insertAdjacentHTML('beforeend', optInsertLarge(opt.name, opt.key, opt.tooltip, opt.checked));
       opt.sub.forEach((subopt, subindex) => {
-        optList.insertAdjacentHTML('beforeend', optInsert(subopt.name, `${opt.key}-${subindex}`, subopt.tooltip, subopt.checked, opt.checked === false));
+        optList.insertAdjacentHTML('beforeend', optInsert(subopt.name, `${opt.key}-${subindex}`, subopt.tooltip, subopt.checked));
       });
       optList.insertAdjacentHTML('beforeend', '<hr>');
 
       const groupbox = document.getElementById(`cbgroup-${opt.key}`);
+      const grouplabel = document.getElementById(`cbgroup-label-${opt.key}`);
 
+      /** Group checkbox is just a mass toggle for its sub-checkboxes; it doesn't gate or disable them. */
       groupbox.parentElement.addEventListener('click', () => {
+        grouplabel.textContent = toggleLabel(groupbox.checked);
         opt.sub.forEach((subopt, subindex) => {
-          document.getElementById(`cb-${opt.key}-${subindex}`).disabled = !groupbox.checked;
-          if (groupbox.checked) { document.getElementById(`cb-${opt.key}-${subindex}`).checked = true; }
+          document.getElementById(`cb-${opt.key}-${subindex}`).checked = groupbox.checked;
         });
       });
     } else {
@@ -736,17 +738,19 @@ function decodeQuery(queryString = window.location.search.slice(1)) {
     /** Populate option list and decode options selected. */
     populateOptions();
 
+    /** Sub-checkboxes are restored directly from the saved data; the group checkbox is purely
+     *  a cosmetic mass-toggle, so its restored look is derived from whether all subs came back checked. */
     let suboptDecodedIndex = 0;
     options.forEach((opt, index) => {
       if ('sub' in opt) {
-        const optIsTrue = optDecoded[index] === '1';
-        document.getElementById(`cbgroup-${opt.key}`).checked = optIsTrue;
         opt.sub.forEach((subopt, subindex) => {
-          const subIsTrue = optIsTrue ? suboptDecoded[suboptDecodedIndex][subindex] === '1' : true;
+          const subIsTrue = suboptDecoded[suboptDecodedIndex][subindex] === '1';
           document.getElementById(`cb-${opt.key}-${subindex}`).checked = subIsTrue;
-          document.getElementById(`cb-${opt.key}-${subindex}`).disabled = optIsTrue;
         });
-        suboptDecodedIndex = suboptDecodedIndex + optIsTrue ? 1 : 0;
+        const allSelected = opt.sub.every((subopt, subindex) => document.getElementById(`cb-${opt.key}-${subindex}`).checked);
+        document.getElementById(`cbgroup-${opt.key}`).checked = allSelected;
+        document.getElementById(`cbgroup-label-${opt.key}`).textContent = allSelected ? 'Deselect All' : 'Select All';
+        suboptDecodedIndex++;
       } else { document.getElementById(`cb-${opt.key}`).checked = optDecoded[index] === '1'; }
     });
 
